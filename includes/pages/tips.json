@@ -1,0 +1,66 @@
+[
+ {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+   {
+    "@type": "ListItem",
+    "position": 1,
+    "name": "Home",
+    "item": "@@SITE@@/"
+   },
+   {
+    "@type": "ListItem",
+    "position": 2,
+    "name": "Tips & Troubleshooting",
+    "item": "@@SITE@@/tips/"
+   }
+  ]
+ },
+ {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+   {
+    "@type": "Question",
+    "name": "Why does the game not load for me?",
+    "acceptedAnswer": {
+     "@type": "Answer",
+     "text": "Work down the list in order: refresh the page; check whether your network blocks game sites (school and office networks often do); try the direct link to the official host instead of an embedded frame; disable extensions that block scripts or ads on the game’s domain; and clear site data for the host if the page loads but the game stalls on its loading screen. Extensions and storage limits are the two most common causes on networks that allow gaming sites."
+    }
+   },
+   {
+    "@type": "Question",
+    "name": "Does Parking Fury work on a phone?",
+    "acceptedAnswer": {
+     "@type": "Answer",
+     "text": "Coolmath Games lists the original and both sequels as supporting browser and mobile platforms, and publishes touch instructions — on-screen wheel plus gas and brake pedals. Parking Fury 3D is different: Poki lists it as desktop-only with keyboard controls. Our own mini-game supports both keyboards and on-screen buttons."
+    }
+   },
+   {
+    "@type": "Question",
+    "name": "Is it safe to use “Parking Fury unblocked” mirror sites?",
+    "acceptedAnswer": {
+     "@type": "Answer",
+     "text": "We do not recommend them. Those mirrors are usually unlicensed copies that wrap the game in pop-ups, fake download buttons and risky scripts, and search results for them are full of low-quality pages. Safer alternatives: play on the official hosts (Coolmath Games, Poki), ask whether game sites are allowed on your network, or use our original mini-game, which runs entirely in your browser with no third-party scripts."
+    }
+   },
+   {
+    "@type": "Question",
+    "name": "Are there cheats for Parking Fury?",
+    "acceptedAnswer": {
+     "@type": "Answer",
+     "text": "Nothing official exists — no cheat codes are published for the series. The closest things to a cheat are patience: slow entries, wide approach angles and instant restarts after a scrape will get you through the hard levels faster than any trick."
+    }
+   },
+   {
+    "@type": "Question",
+    "name": "How do I get better quickly?",
+    "acceptedAnswer": {
+     "@type": "Answer",
+     "text": "Fix one habit at a time, in this order: finish all braking before steering, tap the steering instead of holding it, restart immediately after a scrape instead of recovering, and read the bay before you move. The walkthrough page shows the full five-phase method."
+    }
+   }
+  ]
+ }
+]

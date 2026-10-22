@@ -1,0 +1,35 @@
+[
+ {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+   {
+    "@type": "ListItem",
+    "position": 1,
+    "name": "Home",
+    "item": "@@SITE@@/"
+   },
+   {
+    "@type": "ListItem",
+    "position": 2,
+    "name": "Parking Fury 2",
+    "item": "@@SITE@@/parking-fury-2/"
+   }
+  ]
+ },
+ {
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Parking Fury 2",
+  "description": "Top-down parking game by Andriy Pidvirnyy, released on Coolmath Games in March 2017 with new maps and additional features over the original.",
+  "author": {
+   "@type": "Person",
+   "name": "Andriy Pidvirnyy"
+  },
+  "datePublished": "2017-03-23",
+  "gamePlatform": "Web browser",
+  "playMode": "SinglePlayer",
+  "inLanguage": "en",
+  "url": "https://www.coolmathgames.com/0-parking-fury-2"
+ }
+]

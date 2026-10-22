@@ -1,14 +1,15 @@
-# Dependencies & build output (rebuilt on the server)
-node_modules/
-dist/
-
-# Secrets — never commit (server par alag se banega)
+# Secrets & local env — never commit
 .env
+.env.local
 
-# Local backups of pre-optimization covers (not needed on the server)
-data/uploads-backups/
+# Local database (SQLite dev fallback)
+data/*.sqlite
+data/*.sqlite-shm
+data/*.sqlite-wal
 
-# Deployment artifact
-pf-site.zip
+# Dependencies
+node_modules/
 
-*.log
+# OS / editor noise
+Thumbs.db
+.DS_Store

@@ -1,0 +1,69 @@
+# ----------------------------------------------------------------------------
+# Parking Fury Guide — Apache config for shared hosting (Hostinger)
+# Drop the whole project into public_html (or a subfolder — see the note on
+# RewriteBase below). Everything else is handled by these rules.
+# ----------------------------------------------------------------------------
+
+DirectoryIndex index.php index.html
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # If you install into a SUBFOLDER (e.g. example.com/games/), change this to
+  # RewriteBase /games/ — at public_html root the default below is correct.
+  RewriteBase /
+
+  # ---- 1) Never expose server-side files -----------------------------------
+  RewriteRule ^(includes|scripts|src-ts|node_modules|data|docs)/ - [F,L]
+  RewriteRule ^(\.env|\.git|database\.sql|package(-lock)?\.json|tailwind\.(config\.js|input\.css)|composer\.(json|lock)) - [F,L]
+
+  # ---- 2) Real files and directories are served as they are ---------------
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # ---- 3) Pretty URLs for the two dynamic text documents ------------------
+  RewriteRule ^sitemap\.xml$ sitemap.php [L]
+  RewriteRule ^robots\.txt$ robots.php [L]
+
+  # ---- 4) Uploaded covers: strip the legacy trailing slash in stored URLs --
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^(uploads/.+)/$ $1 [L]
+
+  # ---- 5) Admin console -----------------------------------------------------
+  RewriteRule ^admin/?$ admin/index.php [L]
+  RewriteRule ^admin/([a-z]+)/?$ admin/$1.php [L]
+
+  # ---- 6) Admin/analytics API ----------------------------------------------
+  RewriteRule ^api/track/?$ api/track.php [L]
+  RewriteRule ^api/admin/login/?$ api/admin/login.php [L]
+  RewriteRule ^api/admin/logout/?$ api/admin/logout.php [L]
+  RewriteRule ^api/admin/upload/?$ api/admin/upload.php [L]
+  RewriteRule ^api/admin/games/?$ api/admin/games.php [L]
+  RewriteRule ^api/admin/games/([0-9a-f-]+)/?$ api/admin/game.php?id=$1 [L,QSA]
+  RewriteRule ^api/admin/analytics/?$ api/admin/analytics.php [L]
+  RewriteRule ^api/admin/seo/?$ api/admin/seo.php [L]
+
+  # ---- 7) Game player: /games/<slug>/ → the dynamic player page ------------
+  RewriteRule ^games/([a-z0-9-]+)/?$ games/show.php?slug=$1 [L,QSA]
+
+  # ---- 8) Editorial routes: /about/ → about.php, etc. ----------------------
+  #     (/games/ and /admin/ and /embed/… are directories and matched above.)
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^([a-z0-9-]+)/?$ $1.php [L]
+
+  # ---- 9) Everything else is a 404 served by the branded 404 page ----------
+  ErrorDocument 404 /404.php
+</IfModule>
+
+# Directory listing off, dotfiles untouched by the web server.
+Options -Indexes
+
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+</IfModule>
+
+# .env / dotfiles are unreadable even if a rewrite rule is bypassed.
+<FilesMatch "^\.">
+  Require all denied
+</FilesMatch>

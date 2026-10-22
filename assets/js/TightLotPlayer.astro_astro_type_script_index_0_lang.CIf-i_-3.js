@@ -1,0 +1,1 @@
+import{t as e}from"./parking-game.BXhek3_9.js";var t=document.querySelector(`[data-minigame]`);t instanceof HTMLElement&&(e(t),document.querySelectorAll(`[data-action]`).forEach(e=>{e.addEventListener(`click`,()=>{document.dispatchEvent(new CustomEvent(`minigame:command`,{detail:{action:e.dataset.action}}))})}));
