@@ -1,0 +1,157 @@
+---
+
+// Editorial page: fully static, rendered at build time.
+export const prerender = true;
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GameStage from '../components/GameStage.astro';
+import { VERSIONS } from '../data/games';
+
+const game = VERSIONS.find((v) => v.slug === 'parking-fury-3')!;
+
+const videoGameSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'VideoGame',
+  name: 'Parking Fury 3',
+  description:
+    'Third top-down parking game by Andriy Pidvirnyy, released on Coolmath Games on 19 October 2017 with the same WASD/arrow-key controls as its predecessors.',
+  author: { '@type': 'Person', name: 'Andriy Pidvirnyy' },
+  datePublished: '2017-10-19',
+  gamePlatform: 'Web browser',
+  playMode: 'SinglePlayer',
+  inLanguage: 'en',
+  url: 'https://www.coolmathgames.com/0-parking-fury-3',
+};
+---
+
+<BaseLayout jsonLd={[videoGameSchema]}>
+  <header class="page-head container--wide">
+    <span class="eyebrow">The series · entry three</span>
+    <h1>Parking Fury 3: The Original Formula, Refined</h1>
+    <p>
+      Parking Fury 3 arrived on 19 October 2017, seven months after Parking Fury 2 and sixteen
+      months after the original. Same developer — Andriy Pidvirnyy — same top-down view, same
+      yellow parking space, same crash-means-retry rule. What you are really buying into is a
+      fresh set of layouts.
+    </p>
+    <div class="chip-row">
+      <span class="pill">Released 19 Oct 2017</span>
+      <span class="pill">Andriy Pidvirnyy</span>
+      <span class="pill">Browser + mobile</span>
+      <span class="pill">Host: Coolmath Games</span>
+    </div>
+  </header>
+
+  <section class="section--tight container--wide" aria-label="Play Parking Fury 3">
+    <GameStage
+      title="Parking Fury 3"
+      officialUrl={game.officialUrl}
+      officialHost={game.host}
+      embedUrl="https://www.bubbleshooter.net/embed.php?id=1697"
+      miniGame={true}
+      credit="Play Parking Fury 3 directly in your browser on this site."
+    />
+  </section>
+
+  <section class="section container prose">
+    <h2>What is actually new here</h2>
+    <p>
+      Not much — and that is the point. Coolmath’s own FAQ describes the sequels as playing
+      “very similarly to the first Parking Fury, just with new maps and a couple of new
+      features.” Parking Fury 3 keeps the instruction sheet of its predecessors verbatim: use
+      WASD or the arrow keys, follow the arrows, stop in the yellow parking space, and avoid
+      walls and parked cars.
+    </p>
+    <p>
+      The official page files it under <strong>Skill → Hard Controls</strong> and lists planning
+      as the skill it trains — a slightly slimmer list than Parking Fury 2, which also credits
+      visual-spatial reasoning and estimation. Coolmath publishes no level count for this entry,
+      so treat any specific number from other sites as unverified.
+    </p>
+
+    <div class="note">
+      <span aria-hidden="true">ℹ</span>
+      <span>
+        <strong>Series lineup (all on Coolmath Games):</strong> Parking Fury (26 May 2016),
+        Parking Fury 2 (23 March 2017), Parking Fury 3 (19 October 2017) — all by Andriy
+        Pidvirnyy. The 3D games are a separate series by a different studio.
+      </span>
+    </div>
+
+    <h2>Controls are unchanged across the trilogy</h2>
+    <div class="table-wrap">
+      <table class="data">
+        <caption>Official instructions, checked October 2026</caption>
+        <thead>
+          <tr>
+            <th scope="col">Action</th>
+            <th scope="col">Keyboard</th>
+            <th scope="col">Touch</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Accelerate</th>
+            <td><kbd class="kbd">W</kbd> / <kbd class="kbd">↑</kbd></td>
+            <td>Gas pedal</td>
+          </tr>
+          <tr>
+            <th scope="row">Reverse</th>
+            <td><kbd class="kbd">S</kbd> / <kbd class="kbd">↓</kbd></td>
+            <td>Brake pedal</td>
+          </tr>
+          <tr>
+            <th scope="row">Steer</th>
+            <td><kbd class="kbd">A</kbd><kbd class="kbd">D</kbd> / <kbd class="kbd">←</kbd><kbd class="kbd">→</kbd></td>
+            <td>Rotate the on-screen wheel</td>
+          </tr>
+          <tr>
+            <th scope="row">Objective</th>
+            <td colspan="2">Follow the arrows and stop inside the yellow rectangle without hitting anything</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      More detail — including what differs in the 3D games — is on the
+      <a href="/how-to-play/">controls page</a>.
+    </p>
+
+    <h2>How to get through it</h2>
+    <p>
+      The layouts are the only variable, so the method that works on level 1 of the original
+      works here: finish your braking in a straight line, cut a wide entry angle, and crawl into
+      the bay. Our <a href="/walkthrough/">walkthrough page</a> covers the structure of the
+      series and the late-game difficulty spike, and <a href="/tips/">the tips page</a> lists the
+      four mistakes that cause most restarts.
+    </p>
+
+    <div class="btn-row" style="margin-bottom:1.5rem">
+      <a class="btn btn--primary" href={game.officialUrl} target="_blank" rel="noopener noreferrer">
+        Play Parking Fury 3 on Coolmath Games<span class="sr-only">(opens in a new tab)</span>
+      </a>
+      <a class="btn btn--secondary" href="/parking-fury-2/">Previous: Parking Fury 2</a>
+    </div>
+
+    <h2>More from the series</h2>
+    <ul class="link-list">
+      <li>
+        <a class="link-card" href="/">
+          <span class="link-card__icon" aria-hidden="true">1</span>
+          <span><strong>Parking Fury (2016)</strong><span>The original — guide, controls and our original mini-game, Tight Lot.</span></span>
+        </a>
+      </li>
+      <li>
+        <a class="link-card" href="/parking-fury-2/">
+          <span class="link-card__icon" aria-hidden="true">2</span>
+          <span><strong>Parking Fury 2 (2017)</strong><span>The middle entry, with the official skills list published for it.</span></span>
+        </a>
+      </li>
+      <li>
+        <a class="link-card" href="/parking-fury-3d/">
+          <span class="link-card__icon" aria-hidden="true">3D</span>
+          <span><strong>Parking Fury 3D</strong><span>Same brand name, different developer — a 3D game on Poki.</span></span>
+        </a>
+      </li>
+    </ul>
+  </section>
+</BaseLayout>

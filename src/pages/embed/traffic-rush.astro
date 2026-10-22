@@ -1,0 +1,27 @@
+---
+/**
+ * Standalone host for the original Traffic Rush mini-game (internal embed).
+ */
+import '../../styles/global.css';
+import TrafficRushPlayer from '../../components/TrafficRushPlayer.astro';
+
+// Prerendered: the game document is served from disk for the fastest possible
+// frame start. Plays are counted by the player page's beacon, not here.
+export const prerender = true;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, follow" />
+    <meta name="theme-color" content="#111318" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>Traffic Rush — original driving game</title>
+  </head>
+  <body>
+    <TrafficRushPlayer />
+  </body>
+</html>

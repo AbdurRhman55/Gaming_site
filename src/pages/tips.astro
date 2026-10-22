@@ -1,0 +1,220 @@
+---
+
+// Editorial page: fully static, rendered at build time.
+export const prerender = true;
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FaqList, { type FaqItem } from '../components/FaqList.astro';
+
+const faqs: FaqItem[] = [
+  {
+    q: 'Why does the game not load for me?',
+    a: 'Work down the list in order: refresh the page; check whether your network blocks game sites (school and office networks often do); try the direct link to the official host instead of an embedded frame; disable extensions that block scripts or ads on the game’s domain; and clear site data for the host if the page loads but the game stalls on its loading screen. Extensions and storage limits are the two most common causes on networks that allow gaming sites.',
+  },
+  {
+    q: 'Does Parking Fury work on a phone?',
+    a: 'Coolmath Games lists the original and both sequels as supporting browser and mobile platforms, and publishes touch instructions — on-screen wheel plus gas and brake pedals. Parking Fury 3D is different: Poki lists it as desktop-only with keyboard controls. Our own mini-game supports both keyboards and on-screen buttons.',
+  },
+  {
+    q: 'Is it safe to use “Parking Fury unblocked” mirror sites?',
+    a: 'We do not recommend them. Those mirrors are usually unlicensed copies that wrap the game in pop-ups, fake download buttons and risky scripts, and search results for them are full of low-quality pages. Safer alternatives: play on the official hosts (Coolmath Games, Poki), ask whether game sites are allowed on your network, or use our original mini-game, which runs entirely in your browser with no third-party scripts.',
+  },
+  {
+    q: 'Are there cheats for Parking Fury?',
+    a: 'Nothing official exists — no cheat codes are published for the series. The closest things to a cheat are patience: slow entries, wide approach angles and instant restarts after a scrape will get you through the hard levels faster than any trick.',
+  },
+  {
+    q: 'How do I get better quickly?',
+    a: 'Fix one habit at a time, in this order: finish all braking before steering, tap the steering instead of holding it, restart immediately after a scrape instead of recovering, and read the bay before you move. The walkthrough page shows the full five-phase method.',
+  },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: f.a.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim(),
+    },
+  })),
+};
+---
+
+<BaseLayout jsonLd={[faqSchema]}>
+  <header class="page-head container--wide">
+    <span class="eyebrow">Tips &amp; troubleshooting</span>
+    <h1>Parking Fury Tips, Mistakes and Troubleshooting</h1>
+    <p>
+      Two kinds of help live on this page: how to stop crashing (habits that work on every game
+      in the series) and what to do when the game itself misbehaves (networks, extensions and
+      storage — the actual causes, in the order worth trying them).
+    </p>
+    <div class="chip-row">
+      <span class="pill">Driving advice</span>
+      <span class="pill">Fix-in-order troubleshooting</span>
+      <span class="pill">Device compatibility</span>
+    </div>
+  </header>
+
+  <section class="section container prose">
+    <h2>Tips that prevent most crashes</h2>
+
+    <h3>Slow is smooth before the bay, not in it</h3>
+    <p>
+      Nearly every failed run is a speed problem that started two car-lengths too early. Do your
+      braking while you still have a straight line, so the only thing left to do at the bay is
+      steer gently and stop. If you are still adjusting speed once the nose is between two parked
+      cars, you have already lost the margin that stops the scrape.
+    </p>
+
+    <h3>Tap the steering, do not hold it</h3>
+    <p>
+      On a keyboard, holding <kbd class="kbd">←</kbd> from any real speed arcs the car past the
+      slot and swings the tail into a neighbour. Short taps keep the arc shallow and, just as
+      importantly, keep the correction reversible. On touch, small rotations of the wheel do the
+      same thing — big hand-over-hand swings belong on the open road, not in the lot.
+    </p>
+
+    <h3>Enter perpendicular, leave your ego</h3>
+    <p>
+      Straight approaches beat clever ones. Line up square to the bay while you have space, and
+      take the wider route if it means the final metre is straight. The diagonal shortcut that
+      saves two seconds exists mostly to put your rear corner next to a wall.
+    </p>
+
+    <h3>Restart after a scrape — every time</h3>
+    <p>
+      Official descriptions of the series warn that crashing forces a retry, and even where you
+      can reverse out, you are now solving a harder problem (a pinched car) than the one you
+      started with. Resetting costs a second; salvaging a bad position costs the run.
+    </p>
+
+    <h3>Touch-specific: rotate, do not stab</h3>
+    <p>
+      The mobile layout uses an on-screen wheel and pedals. The wheel rewards smooth rotation —
+      stabbing at the left or right side of it produces the keyboard version of holding steer.
+      Tap the brake pedal to settle the car between adjustments rather than riding the gas into
+      the space.
+    </p>
+
+    <h3>In the 3D games: fix the camera first</h3>
+    <p>
+      Parking Fury 3D and its sequels let you cycle the camera with <kbd class="kbd">C</kbd>, and
+      bays that look aligned from the default view often are not. Check the angle from a second
+      view <em>before</em> you commit to a reverse manoeuvre, not halfway through one. Full 3D
+      controls are on the <a href="/parking-fury-3d/">Parking Fury 3D page</a>.
+    </p>
+
+    <h2>The four mistakes behind most retries</h2>
+    <div class="table-wrap">
+      <table class="data">
+        <caption>Symptom → cause → one-line fix</caption>
+        <thead>
+          <tr>
+            <th scope="col">What happens</th>
+            <th scope="col">Why</th>
+            <th scope="col">The fix</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Rear clips the neighbour</th>
+            <td>Turning started too early from too close</td>
+            <td>Pull forward past the slot, then reverse in</td>
+          </tr>
+          <tr>
+            <th scope="row">Nose overshoots the bay</th>
+            <td>Still carrying speed at the entry</td>
+            <td>Brake in the straight; coast the last metre</td>
+          </tr>
+          <tr>
+            <th scope="row">Steering does nothing</th>
+            <td>Car is stationary or barely moving</td>
+            <td>Roll forward or back while steering</td>
+          </tr>
+          <tr>
+            <th scope="row">A small scrape becomes a wall-hug</th>
+            <td>Trying to salvage instead of restarting</td>
+            <td>Reset the attempt immediately</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Does it work on your device?</h2>
+    <div class="table-wrap">
+      <table class="data">
+        <caption>Platform support as published by each official host, October 2026</caption>
+        <thead>
+          <tr>
+            <th scope="col">Game</th>
+            <th scope="col">Listed platforms</th>
+            <th scope="col">Input</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row"><a href="/">Parking Fury</a></th>
+            <td>Browser, mobile</td>
+            <td>WASD/arrows or on-screen wheel + pedals</td>
+          </tr>
+          <tr>
+            <th scope="row"><a href="/parking-fury-2/">Parking Fury 2</a></th>
+            <td>Browser, mobile</td>
+            <td>WASD/arrows or on-screen wheel + pedals</td>
+          </tr>
+          <tr>
+            <th scope="row"><a href="/parking-fury-3/">Parking Fury 3</a></th>
+            <td>Browser, mobile</td>
+            <td>WASD/arrows or on-screen wheel + pedals</td>
+          </tr>
+          <tr>
+            <th scope="row"><a href="/parking-fury-3d/">Parking Fury 3D series</a></th>
+            <td>Desktop (per Poki)</td>
+            <td>Arrow keys, Ctrl, C, Space (varies by entry)</td>
+          </tr>
+          <tr>
+            <th scope="row">Our mini-game</th>
+            <td>Any modern browser, phone or desktop</td>
+            <td>Arrows/WASD or on-screen buttons</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="small muted">
+      These are the hosts’ own claims, not our measurements — device behaviour can still vary
+      with your browser and network.
+    </p>
+
+    <h2>Troubleshooting, in the order to try it</h2>
+    <ol class="steps">
+      <li><strong>Refresh, then test another site.</strong> A quick reload fixes stalled scripts; if other sites fail too, the problem is your connection, not the game.</li>
+      <li><strong>Check whether game sites are blocked.</strong> Schools and offices frequently block game domains outright — if the domain does not resolve or returns a block page, no amount of refreshing will help.</li>
+      <li><strong>Use the direct link instead of an embedded frame.</strong> Sites that license these games often refuse to be embedded off-site (both official hosts of the series do). Our game panels always offer a direct link that works when the frame cannot.</li>
+      <li><strong>Look at extensions.</strong> Ad-blockers and privacy extensions that block scripts, storage or ads on the game’s domain are a common cause of “loads but never starts”. Temporarily allow the official host, then reload.</li>
+      <li><strong>Free up site storage.</strong> Games that remember progress write to browser storage; when storage is full or blocked (common with strict privacy settings), loading can stall. Clear the host’s site data and try again.</li>
+      <li><strong>Close competing tabs.</strong> A heavy 3D game plus a dozen background tabs is a stuttering game. Keep the run to one tab and let hardware acceleration stay enabled.</li>
+      <li><strong>Still stuck on our page?</strong> If the frame on this site times out, the error panel gives you the retry button and the direct official link — the page’s guides remain readable either way.</li>
+    </ol>
+
+    <div class="note note--warn">
+      <span aria-hidden="true">⚠</span>
+      <span>
+        <strong>About “unblocked” sites:</strong> we do not link to unlicensed mirrors, and you
+        should be careful with them — fake download buttons, pop-under ads and hijacked redirects
+        are common on those domains. Follow your school’s or employer’s network policy; the
+        official hosts plus our own mini-game cover the legitimate options.
+      </span>
+    </div>
+
+    <div class="btn-row">
+      <a class="btn btn--primary" href="/games/tight-lot/">Play Tight Lot</a>
+      <a class="btn btn--secondary" href="/walkthrough/">Walkthrough &amp; method</a>
+    </div>
+
+    <h2>Frequently asked questions</h2>
+    <FaqList items={faqs} />
+  </section>
+</BaseLayout>

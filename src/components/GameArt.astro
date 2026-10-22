@@ -1,0 +1,23 @@
+---
+import { ART } from '../data/art';
+
+interface Props {
+  id: string;
+  /** Descriptive alternative text; omit for purely decorative duplicates. */
+  alt?: string;
+}
+
+const { id, alt } = Astro.props;
+const inner = ART[id] ?? ART.pf1;
+---
+
+<svg
+  viewBox="0 0 320 180"
+  preserveAspectRatio="xMidYMid slice"
+  role={alt ? 'img' : 'presentation'}
+  aria-hidden={alt ? undefined : 'true'}
+  focusable="false"
+>
+  {alt && <title>{alt}</title>}
+  <Fragment set:html={inner} />
+</svg>

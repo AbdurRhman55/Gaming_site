@@ -1,0 +1,178 @@
+---
+import '../styles/global.css';
+import '../styles/portal.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { PAGES, canonicalUrl, type PageSEO } from '../data/seo';
+import { SITE, DISCLAIMER } from '../data/site';
+
+interface Props {
+  /** Extra JSON-LD graph objects for this page (only truthful, eligible data). */
+  jsonLd?: Record<string, unknown>[];
+  /** Set false to suppress the automatic breadcrumb trail + its BreadcrumbList. */
+  breadcrumbs?: boolean;
+  /** SEO metadata for dynamic routes (game pages) with no entry in src/data/seo.ts. */
+  seo?: {
+    title: string;
+    description: string;
+    /** Canonical path, trailing slash included. */
+    path: string;
+    noindex?: boolean;
+  };
+  /** Set false to suppress the public website header (e.g. for admin dashboard). */
+  header?: boolean;
+  /** Set false to suppress the public website footer. */
+  footer?: boolean;
+  /** Breadcrumb levels after Home; the final item is the current page. */
+  trail?: { name: string; path: string }[];
+}
+
+const {
+  jsonLd = [],
+  breadcrumbs = true,
+  header = true,
+  footer = true,
+  seo: seoOverride,
+  trail: trailOverride,
+} = Astro.props;
+
+// --- route lookup (single source of truth: src/data/seo.ts) -----------------
+const rawPath = Astro.url.pathname;
+const normalized =
+  rawPath === '/' || rawPath.endsWith('/') ? rawPath : rawPath + '/';
+const page: PageSEO | undefined =
+  (seoOverride as PageSEO | undefined) ?? PAGES[normalized] ?? PAGES['/404'];
+if (!page) throw new Error(`Missing SEO entry for route "${rawPath}" — add it to src/data/seo.ts`);
+
+const is404 = rawPath.startsWith('/404');
+const canonical = canonicalUrl(Astro.site ?? 'http://localhost:4321', page.path);
+const siteUrl = String(Astro.site ?? 'http://localhost:4321').replace(/\/+$/, '');
+const ogImage = `${siteUrl}/images/og-cover.png`;
+const pageTitle = is404 ? 'Page Not Found' : page.title;
+
+// --- breadcrumbs (visible trail + BreadcrumbList schema) --------------------
+const trail = breadcrumbs
+  ? [
+      { name: 'Home', path: '/' },
+      ...(trailOverride ?? (page.breadcrumb ? [{ name: page.breadcrumb, path: page.path }] : [])),
+    ]
+  : [];
+
+const breadcrumbSchema =
+  trail.length > 1
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: trail.map((item, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          name: item.name,
+          item: canonicalUrl(Astro.site ?? 'http://localhost:4321', item.path),
+        })),
+      }
+    : null;
+
+const websiteSchema =
+  page.path === '/'
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'WebSite',
+        name: SITE.name,
+        description: SITE.tagline,
+        url: canonicalUrl(Astro.site ?? 'http://localhost:4321', '/'),
+        inLanguage: 'en',
+      }
+    : null;
+
+const schemas = [...(websiteSchema ? [websiteSchema] : []), ...(breadcrumbSchema ? [breadcrumbSchema] : []), ...jsonLd];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={page.description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="robots" content={is404 || page.noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large'} />
+    <meta name="author" content={SITE.name} />
+    <meta name="theme-color" content={SITE.themeColor} />
+    <meta name="color-scheme" content="dark" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:locale" content={SITE.locale} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={page.description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${SITE.name} — cover image with the words “${pageTitle}”`} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={page.description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={`${SITE.name} — cover image with the words “${pageTitle}”`} />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/images/touch-icon.png" />
+
+    {schemas.map((schema) => (
+      <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    ))}
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+    {header && <Header />}
+    <main id="main">
+      {trail.length > 1 && (
+        <nav class="crumbs container" aria-label="Breadcrumb">
+          <ol>
+            {trail.map((item, i) => (
+              <li>
+                {i === trail.length - 1 ? (
+                  <span aria-current="page">{item.name}</span>
+                ) : (
+                  <a href={item.path}>{item.name}</a>
+                )}
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )}
+      <slot />
+    </main>
+    {footer && <Footer disclaimer={DISCLAIMER} year={new Date().getFullYear()} />}
+    <script is:inline>
+      // First-party view beacon: after load, tell our own /api/track/ endpoint
+      // which page rendered; the server records the count. Cookie-free, no
+      // third parties, never blocks rendering (fires on window load). Skips
+      // noindex pages (admin, 404) so operator activity and typos stay out of
+      // the numbers.
+      (function () {
+        var send = function (body) {
+          fetch('/api/track/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+            keepalive: true,
+            credentials: 'omit',
+          }).catch(function () {});
+        };
+        var view = function () {
+          var p = location.pathname;
+          if (p.indexOf('/admin') === 0 || p.indexOf('/api') === 0) return;
+          if (document.querySelector('meta[name="robots"][content*="noindex"]')) return;
+          send({ kind: 'view', path: p });
+        };
+        if (document.readyState === 'complete') view();
+        else window.addEventListener('load', view, { once: true });
+      })();
+    </script>
+  </body>
+</html>

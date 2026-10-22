@@ -1,0 +1,43 @@
+---
+import GameArt from './GameArt.astro';
+import type { RelatedGame } from '../data/games';
+
+interface Props {
+  game: RelatedGame;
+}
+
+const { game } = Astro.props;
+---
+
+<article class="game-card">
+  <a class="game-card__link" href={game.url}>
+    <div class="game-card__media">
+      {game.cover ? (
+        <img src={game.cover} alt={game.name} width="640" height="360" loading="lazy" decoding="async" />
+      ) : (
+        <div class="game-card__art">
+          <GameArt
+            id={game.art}
+            alt={`Illustration for ${game.name}`}
+          />
+        </div>
+      )}
+      <span class="game-card__play" aria-hidden="true">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z" /></svg>
+      </span>
+      <span class="game-card__badge game-card__badge--accent">Free Play</span>
+    </div>
+    <div class="game-card__body">
+      <h3 class="game-card__title">{game.name}</h3>
+      <p class="game-card__desc">{game.description}</p>
+      <div class="game-card__feature">
+        <span class="game-card__dot" aria-hidden="true"></span>
+        <span class="small">{game.diff}</span>
+      </div>
+      <div class="game-card__meta">
+        <span class="chip chip--sm">{game.devices ?? 'Browser'}</span>
+        <span class="game-card__cta">Play in site <span aria-hidden="true">→</span></span>
+      </div>
+    </div>
+  </a>
+</article>

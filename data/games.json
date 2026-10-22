@@ -1,0 +1,483 @@
+{
+  "version": 1,
+  "games": [
+    {
+      "id": "seed-tight-lot",
+      "slug": "tight-lot",
+      "title": "Parking Fury",
+      "description": "Parking Fury is the ultimate test of driving precision and finesse. Steer through complex parking lots, navigate around obstacles, and park inside the marked bay without a scratch. Experience the classic game that started the sensation.",
+      "category": "Parking",
+      "tags": [
+        "parking fury",
+        "parking games",
+        "car parking",
+        "driving games",
+        "html5",
+        "browser games",
+        "classic"
+      ],
+      "controls": "Arrow keys or WASD to accelerate, brake, reverse and steer. Tap keys lightly for fine cornering control.",
+      "specs": [
+        {
+          "label": "Game Type",
+          "value": "Precision Parking"
+        },
+        {
+          "label": "Genre",
+          "value": "Driving"
+        },
+        {
+          "label": "Platform",
+          "value": "Web Browser"
+        },
+        {
+          "label": "Technology",
+          "value": "HTML5"
+        },
+        {
+          "label": "Mode",
+          "value": "Single Player"
+        },
+        {
+          "label": "Input",
+          "value": "Keyboard / Touch"
+        }
+      ],
+      "cover": "/uploads/g-mvhs1q65-9f1503bf.jpg/",
+      "embedUrl": "https://www.bubbleshooter.net/embed.php?id=1695",
+      "status": "published",
+      "featured": true,
+      "createdAt": "2026-10-20T12:00:00.000Z",
+      "updatedAt": "2026-10-21T18:00:00.000Z"
+    },
+    {
+      "id": "seed-traffic-rush",
+      "slug": "traffic-rush",
+      "title": "Parking Fury 2",
+      "description": "Parking Fury 2 expands the top-down driving experience with 10 demanding levels, new vehicle types, damaged asphalt routes, and higher difficulty curves. Park each vehicle safely into designated bays.",
+      "category": "Parking",
+      "tags": [
+        "parking fury 2",
+        "parking games",
+        "driving games",
+        "arcade",
+        "precision"
+      ],
+      "controls": "WASD or Arrow Keys to steer, accelerate and reverse. Follow the yellow guide arrows.",
+      "specs": [
+        {
+          "label": "Game Type",
+          "value": "Top-Down Parking"
+        },
+        {
+          "label": "Genre",
+          "value": "Driving"
+        },
+        {
+          "label": "Levels",
+          "value": "10 Stages"
+        },
+        {
+          "label": "Platform",
+          "value": "Web Browser"
+        },
+        {
+          "label": "Mode",
+          "value": "Single Player"
+        }
+      ],
+      "cover": "/uploads/g-mvhs6r7l-f4c36f71.jpg/",
+      "embedUrl": "https://www.bubbleshooter.net/embed.php?id=1696",
+      "status": "published",
+      "featured": true,
+      "createdAt": "2026-10-20T12:05:00.000Z",
+      "updatedAt": "2026-10-21T17:10:34.123Z"
+    },
+    {
+      "id": "game-pf-3",
+      "slug": "parking-fury-3",
+      "title": "Parking Fury 3",
+      "description": "Take on the darkness in Parking Fury 3. Steer sports cars, sedans, and trucks through dimly lit lots using your headlights to spot barriers and marked bays in the dead of night.",
+      "category": "Parking",
+      "tags": [
+        "parking fury 3",
+        "night parking",
+        "headlights",
+        "driving games",
+        "hard parking"
+      ],
+      "controls": "Arrow keys or WASD to drive. Use headlights to judge distances before turning into slots.",
+      "specs": [
+        {
+          "label": "Game Type",
+          "value": "Night Parking"
+        },
+        {
+          "label": "Genre",
+          "value": "Driving Simulation"
+        },
+        {
+          "label": "Platform",
+          "value": "Web Browser"
+        },
+        {
+          "label": "Mode",
+          "value": "Single Player"
+        }
+      ],
+      "cover": "/uploads/g-cover-pf3.jpg/",
+      "embedUrl": "https://www.bubbleshooter.net/embed.php?id=1697",
+      "status": "published",
+      "featured": false,
+      "createdAt": "2026-10-21T18:00:00.000Z",
+      "updatedAt": "2026-10-21T16:21:58.458Z"
+    },
+    {
+      "id": "72b2ccd1-28ae-4b4d-a3a1-042d7544f5a2",
+      "slug": "parking-fury-3d",
+      "title": "Parking Fury 3D",
+      "description": "Enter an open 3D city environment where driving is only half the mission. Steal vehicles, outsmart police patrol routes, and deliver high-value rides into tight garages across the city.",
+      "category": "Driving",
+      "tags": [
+        "parking fury 3d",
+        "3D driving",
+        "police chase",
+        "car theft",
+        "city driving"
+      ],
+      "controls": "Arrow keys to drive; Ctrl to enter or exit vehicles; C to switch camera views.",
+      "specs": [
+        {
+          "label": "Game Type",
+          "value": "3D Action Driving"
+        },
+        {
+          "label": "Graphics",
+          "value": "Full 3D"
+        },
+        {
+          "label": "Platform",
+          "value": "Web Browser"
+        },
+        {
+          "label": "Mode",
+          "value": "Single Player"
+        }
+      ],
+      "cover": "/uploads/g-mvhrth5h-4f26a042.jpg/",
+      "embedUrl": "https://www.bubbleshooter.net/embed.php?id=1698",
+      "status": "published",
+      "featured": false,
+      "createdAt": "2026-10-21T07:08:32.423Z",
+      "updatedAt": "2026-10-21T18:00:00.000Z"
+    },
+    {
+      "id": "045113f3-0092-41e7-9f4a-ab4c90b0ae66",
+      "slug": "parking-fury-3d-beach-city",
+      "title": "Parking Fury 3D: Beach City",
+      "description": "Navigate sunny seaside boulevards and narrow coastal alleyways in Beach City. Evade patrolling squad cars, find hidden vehicles, and park cleanly in crowded beachside bays.",
+      "category": "Driving",
+      "tags": [
+        "beach city",
+        "3d parking",
+        "parking fury 3d",
+        "supercars",
+        "city exploration"
+      ],
+      "controls": "Arrow keys to drive; Ctrl to enter cars; Space for handbrake; C to change camera.",
+      "specs": [
+        {
+          "label": "Game Type",
+          "value": "3D Coastal Driving"
+        },
+        {
+          "label": "Environment",
+          "value": "Beach City 3D"
+        },
+        {
+          "label": "Platform",
+          "value": "Web Browser"
+        },
+        {
+          "label": "Mode",
+          "value": "Single Player"
+        }
+      ],
+      "cover": "/uploads/g-mvhsiw7n-692eea77.jpg/",
+      "embedUrl": "https://www.bubbleshooter.net/embed.php?id=1714",
+      "status": "published",
+      "featured": false,
+      "createdAt": "2026-10-21T07:28:18.341Z",
+      "updatedAt": "2026-10-21T18:00:00.000Z"
+    },
+    {
+      "id": "game-pf-3d-bounty",
+      "slug": "parking-fury-3d-bounty-hunter",
+      "title": "Parking Fury 3D: Bounty Hunter",
+      "description": "Hunt high-value target cars in a gritty 3D metropolis. Outrun pursuing squad cars, manage sharp turns in narrow back alleys, and deliver each vehicle to safe drops for lucrative rewards.",
+      "category": "Driving",
+      "tags": [
+        "bounty hunter",
+        "3d racing",
+        "missions",
+        "action driving",
+        "parking fury"
+      ],
+      "controls": "WASD or Arrow keys to steer and accelerate; Ctrl to steal car; Space handbrake; C camera.",
+      "specs": [
+        {
+          "label": "Game Type",
+          "value": "Mission Driving"
+        },
+        {
+          "label": "Setting",
+          "value": "Urban 3D"
+        },
+        {
+          "label": "Platform",
+          "value": "Web Browser"
+        },
+        {
+          "label": "Mode",
+          "value": "Single Player"
+        }
+      ],
+      "cover": "/uploads/g-cover-bounty.jpg/",
+      "embedUrl": "https://www.bubbleshooter.net/embed.php?id=1716",
+      "status": "published",
+      "featured": false,
+      "createdAt": "2026-10-21T18:00:00.000Z",
+      "updatedAt": "2026-10-21T18:00:00.000Z"
+    },
+    {
+      "id": "game-pf-3d-night-thief",
+      "slug": "parking-fury-3d-night-thief",
+      "title": "Parking Fury 3D: Night Thief",
+      "description": "Operate under cover of darkness as an undercover car collector. Infiltrate restricted docks and city garages, commandeer luxury rides, and deliver them without triggering security alarms.",
+      "category": "Driving",
+      "tags": [
+        "night thief",
+        "stealth driving",
+        "3d parking",
+        "supercars",
+        "evasion"
+      ],
+      "controls": "WASD or Arrow keys to drive; Ctrl to switch vehicles; Space to drift; C for camera.",
+      "specs": [
+        {
+          "label": "Game Type",
+          "value": "3D Stealth Driving"
+        },
+        {
+          "label": "Time",
+          "value": "Midnight Operations"
+        },
+        {
+          "label": "Platform",
+          "value": "Web Browser"
+        },
+        {
+          "label": "Mode",
+          "value": "Single Player"
+        }
+      ],
+      "cover": "/uploads/g-cover-nightthief.jpg/",
+      "embedUrl": "https://www.bubbleshooter.net/embed.php?id=1715",
+      "status": "published",
+      "featured": false,
+      "createdAt": "2026-10-21T18:00:00.000Z",
+      "updatedAt": "2026-10-21T18:00:00.000Z"
+    },
+    {
+      "id": "game-extreme-parking",
+      "slug": "extreme-car-parking",
+      "title": "Extreme Car Parking",
+      "description": "Push your spatial judgment to the brink. Navigate razor-thin slalom barriers, tight ninety-degree bends, and micro-parking bays with zero tolerance for collision.",
+      "category": "Parking",
+      "tags": [
+        "extreme parking",
+        "skill challenge",
+        "precision driving",
+        "tight spaces"
+      ],
+      "controls": "Arrow keys or touch controls to accelerate, reverse, and steer smoothly.",
+      "specs": [
+        {
+          "label": "Game Type",
+          "value": "Hardcore Parking"
+        },
+        {
+          "label": "Difficulty",
+          "value": "Expert"
+        },
+        {
+          "label": "Platform",
+          "value": "Web Browser & Mobile"
+        },
+        {
+          "label": "Mode",
+          "value": "Single Player"
+        }
+      ],
+      "cover": "/uploads/g-cover-extremepark.jpg/",
+      "embedUrl": "https://www.bubbleshooter.net/embed.php?id=1702",
+      "status": "published",
+      "featured": false,
+      "createdAt": "2026-10-21T18:00:00.000Z",
+      "updatedAt": "2026-10-21T18:00:00.000Z"
+    },
+    {
+      "id": "game-car-parking-school",
+      "slug": "car-parking-school",
+      "title": "Car Parking School",
+      "description": "Learn professional driving academy maneuvers including parallel curb docking, reverse angle parking, and navigating busy traffic training circuits in modern simulation graphics.",
+      "category": "Parking",
+      "tags": [
+        "driving school",
+        "parking simulator",
+        "parallel parking",
+        "tutorial driving"
+      ],
+      "controls": "WASD or arrow keys to steer and pedal; E for camera; Space for brake.",
+      "specs": [
+        {
+          "label": "Game Type",
+          "value": "Driving Academy"
+        },
+        {
+          "label": "Skills",
+          "value": "Parallel & Reverse Parking"
+        },
+        {
+          "label": "Platform",
+          "value": "Web Browser"
+        },
+        {
+          "label": "Mode",
+          "value": "Single Player"
+        }
+      ],
+      "cover": "/uploads/g-cover-parkschool.jpg/",
+      "embedUrl": "https://www.bubbleshooter.net/embed.php?id=1700",
+      "status": "published",
+      "featured": false,
+      "createdAt": "2026-10-21T18:00:00.000Z",
+      "updatedAt": "2026-10-21T18:00:00.000Z"
+    },
+    {
+      "id": "game-dubai-police-parking",
+      "slug": "dubai-police-parking-2",
+      "title": "Dubai Police Parking 2",
+      "description": "Get behind the wheel of million-dollar Dubai Police patrol supercars. Respond to alert zones and maneuver high-horsepower luxury interceptors into marked incident parking spots.",
+      "category": "Driving",
+      "tags": [
+        "dubai police",
+        "supercar parking",
+        "luxury patrol",
+        "fast cars"
+      ],
+      "controls": "Arrow keys or WASD to accelerate and steer; Space for instant handbrake lock.",
+      "specs": [
+        {
+          "label": "Game Type",
+          "value": "Supercar Patrol"
+        },
+        {
+          "label": "Setting",
+          "value": "Dubai City"
+        },
+        {
+          "label": "Platform",
+          "value": "Web Browser"
+        },
+        {
+          "label": "Mode",
+          "value": "Single Player"
+        }
+      ],
+      "cover": "/uploads/g-cover-dubaipolice.jpg/",
+      "embedUrl": "https://www.bubbleshooter.net/embed.php?id=1705",
+      "status": "published",
+      "featured": false,
+      "createdAt": "2026-10-21T18:00:00.000Z",
+      "updatedAt": "2026-10-21T18:00:00.000Z"
+    },
+    {
+      "id": "game-park-out",
+      "slug": "park-out",
+      "title": "Park Out & Master",
+      "description": "Engage your brain with grid-based parking lot puzzle mechanics. Slide obstructing sedans, buses, and sports cars along their tracks to clear the golden exit lane for your car.",
+      "category": "Puzzle",
+      "tags": [
+        "traffic jam",
+        "car puzzle",
+        "logic game",
+        "sliding block",
+        "brain game"
+      ],
+      "controls": "Mouse click/drag or touch swipe to slide vehicles forward and backward.",
+      "specs": [
+        {
+          "label": "Game Type",
+          "value": "Logic Puzzle"
+        },
+        {
+          "label": "Mechanic",
+          "value": "Sliding Block"
+        },
+        {
+          "label": "Platform",
+          "value": "Desktop & Mobile"
+        },
+        {
+          "label": "Mode",
+          "value": "Single Player"
+        }
+      ],
+      "cover": "/uploads/g-cover-parkout.jpg/",
+      "embedUrl": "https://www.bubbleshooter.net/embed.php?id=1709",
+      "status": "published",
+      "featured": false,
+      "createdAt": "2026-10-21T18:00:00.000Z",
+      "updatedAt": "2026-10-21T18:00:00.000Z"
+    },
+    {
+      "id": "game-drive-and-park",
+      "slug": "drive-and-park",
+      "title": "Drive and Park",
+      "description": "Fast-paced one-tap drifting and parking action. Release your drift at the exact microsecond to glide into curbside spots between other parked cars at top speed.",
+      "category": "Arcade",
+      "tags": [
+        "drift parking",
+        "one tap",
+        "timing game",
+        "arcade driving"
+      ],
+      "controls": "Press and hold Space / Left Mouse / Screen to initiate drift; release to straighten.",
+      "specs": [
+        {
+          "label": "Game Type",
+          "value": "Arcade Timing"
+        },
+        {
+          "label": "Input",
+          "value": "One-Touch / Key"
+        },
+        {
+          "label": "Platform",
+          "value": "Web Browser & Mobile"
+        },
+        {
+          "label": "Mode",
+          "value": "Single Player"
+        }
+      ],
+      "cover": "/uploads/g-cover-drivepark.jpg/",
+      "embedUrl": "https://www.bubbleshooter.net/embed.php?id=1704",
+      "status": "published",
+      "featured": false,
+      "createdAt": "2026-10-21T18:00:00.000Z",
+      "updatedAt": "2026-10-21T18:00:00.000Z"
+    }
+  ]
+}

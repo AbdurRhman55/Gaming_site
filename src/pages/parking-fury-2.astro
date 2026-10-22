@@ -1,0 +1,207 @@
+---
+
+// Editorial page: fully static, rendered at build time.
+export const prerender = true;
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GameStage from '../components/GameStage.astro';
+import { VERSIONS, OFFICIAL_HOSTS } from '../data/games';
+
+const game = VERSIONS.find((v) => v.slug === 'parking-fury-2')!;
+
+const videoGameSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'VideoGame',
+  name: 'Parking Fury 2',
+  description:
+    'Top-down parking game by Andriy Pidvirnyy, released on Coolmath Games in March 2017 with new maps and additional features over the original.',
+  author: { '@type': 'Person', name: 'Andriy Pidvirnyy' },
+  datePublished: '2017-03-23',
+  gamePlatform: 'Web browser',
+  playMode: 'SinglePlayer',
+  inLanguage: 'en',
+  url: 'https://www.coolmathgames.com/0-parking-fury-2',
+};
+---
+
+<BaseLayout jsonLd={[videoGameSchema]}>
+  <header class="page-head container--wide">
+    <span class="eyebrow">The series · entry two</span>
+    <h1>Parking Fury 2: New Maps, Same Tight Parking</h1>
+    <p>
+      Parking Fury 2 is the direct sequel to the 2016 original, released on 23 March 2017 by the
+      same developer, Andriy Pidvirnyy. The handling and goal are unchanged — reach the marked
+      space without crashing — but every map is new, and Coolmath Games notes a couple of added
+      features over the first game.
+    </p>
+    <div class="chip-row">
+      <span class="pill">Released 23 Mar 2017</span>
+      <span class="pill">Andriy Pidvirnyy</span>
+      <span class="pill">Browser + mobile</span>
+      <span class="pill">Host: Coolmath Games</span>
+    </div>
+  </header>
+
+  <section class="section--tight container--wide" aria-label="Play Parking Fury 2">
+    <GameStage
+      title="Parking Fury 2"
+      officialUrl={game.officialUrl}
+      officialHost={game.host}
+      embedUrl="https://www.bubbleshooter.net/embed.php?id=1696"
+      miniGame={true}
+      credit="Play Parking Fury 2 directly in your browser on this site."
+    />
+  </section>
+
+  <section class="section container prose">
+    <h2>What the official page says</h2>
+    <p>
+      The instructions on Coolmath Games boil the game down to one sentence: “Use WASD or the
+      arrow keys to drive your car! Follow the arrows and stop in the yellow parking space. Be
+      careful not to crash into walls or vehicles!” That is genuinely all there is to learn —
+      the skill comes from the map layouts, not from extra mechanics.
+    </p>
+    <p>
+      Coolmath classifies the game under <strong>Skill → Hard Controls</strong> and lists the
+      skills it exercises as planning, visual-spatial reasoning and estimation. Like the first
+      game, it runs in a browser and on mobile devices, with the on-screen steering wheel and
+      pedals layout on touch screens.
+    </p>
+
+    <div class="note">
+      <span aria-hidden="true">ℹ</span>
+      <span>
+        <strong>How it differs from the original:</strong> Coolmath’s own FAQ describes both
+        sequels as being made by the same developer and playing “very similarly to the first
+        Parking Fury, just with new maps and a couple of new features.” No level count is
+        published for this entry — only the original’s 10 levels are confirmed.
+      </span>
+    </div>
+
+    <h2>Parking Fury 2 vs the original</h2>
+    <div class="table-wrap">
+      <table class="data">
+        <caption>Facts as published by the official host, checked October 2026</caption>
+        <thead>
+          <tr>
+            <th scope="col">&nbsp;</th>
+            <th scope="col">Parking Fury</th>
+            <th scope="col">Parking Fury 2</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Released</th>
+            <td>26 May 2016</td>
+            <td>23 March 2017</td>
+          </tr>
+          <tr>
+            <th scope="row">Developer</th>
+            <td>Andriy Pidvirnyy</td>
+            <td>Andriy Pidvirnyy</td>
+          </tr>
+          <tr>
+            <th scope="row">Levels</th>
+            <td>10 (confirmed)</td>
+            <td>Not published</td>
+          </tr>
+          <tr>
+            <th scope="row">Controls</th>
+            <td>WASD / arrow keys</td>
+            <td>WASD / arrow keys</td>
+          </tr>
+          <tr>
+            <th scope="row">Hosted on</th>
+            <td>Coolmath Games</td>
+            <td>Coolmath Games</td>
+          </tr>
+          <tr>
+            <th scope="row">What’s new</th>
+            <td>The original layout set</td>
+            <td>New maps plus a couple of new features</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>How to approach it</h2>
+    <p>
+      Because the controls are identical to the first game, everything in our
+      <a href="/how-to-play/">controls guide</a> carries over unchanged. The difference is map
+      geometry: sequels squeeze bays into narrower gaps and add obstacles you must thread
+      through first. The reliable pattern is still brake early, straighten the car before the
+      final metre, and enter the yellow space slowly enough that a small steering correction
+      still fits.
+    </p>
+    <p>
+      If you are stuck on a specific layout, the <a href="/walkthrough/">walkthrough page</a>
+      explains the level structure of the original and a method that transfers to every sequel,
+      and <a href="/tips/">the tips page</a> covers the mistakes that cause most retried runs.
+    </p>
+
+    <h2>Where to play Parking Fury 2</h2>
+    <p>
+      The licensed copy lives on Coolmath Games, where it plays free in a browser with no
+      download. This site does not host the game file.
+    </p>
+    <div class="btn-row" style="margin-bottom:1.5rem">
+      <a class="btn btn--primary" href={game.officialUrl} target="_blank" rel="noopener noreferrer">
+        Play Parking Fury 2 on Coolmath Games<span class="sr-only">(opens in a new tab)</span>
+      </a>
+      <a class="btn btn--secondary" href="/">Back to the main guide</a>
+    </div>
+
+    <h2>More from the series</h2>
+    <ul class="link-list">
+      <li>
+        <a class="link-card" href="/">
+          <span class="link-card__icon" aria-hidden="true">1</span>
+          <span><strong>Parking Fury (2016)</strong><span>The original — 10 confirmed levels, guide and our original mini-game, Tight Lot.</span></span>
+        </a>
+      </li>
+      <li>
+        <a class="link-card" href="/parking-fury-3/">
+          <span class="link-card__icon" aria-hidden="true">3</span>
+          <span><strong>Parking Fury 3 (2017)</strong><span>The third entry, released seven months after this one.</span></span>
+        </a>
+      </li>
+      <li>
+        <a class="link-card" href="/parking-fury-3d/">
+          <span class="link-card__icon" aria-hidden="true">3D</span>
+          <span><strong>Parking Fury 3D</strong><span>A different series entirely — another developer, another host, another style.</span></span>
+        </a>
+      </li>
+    </ul>
+  </section>
+
+  <section class="section container--wide">
+    <div class="section-head">
+      <span class="eyebrow">FAQ</span>
+      <h2>Parking Fury 2 questions</h2>
+    </div>
+    <div class="faq">
+      <details>
+        <summary>Does Parking Fury 2 have the same controls as Parking Fury?</summary>
+        <div class="faq__answer">
+          Yes. Both use WASD or the arrow keys on desktop, and the on-screen wheel with gas and
+          brake pedals on touch devices. See the full
+          <a href="/how-to-play/">controls guide</a>.
+        </div>
+      </details>
+      <details>
+        <summary>How many levels does Parking Fury 2 have?</summary>
+        <div class="faq__answer">
+          Coolmath Games does not publish a level count for the sequel — only the original’s 10
+          levels are confirmed. Any other number you see quoted elsewhere is unverified.
+        </div>
+      </details>
+      <details>
+        <summary>Is Parking Fury 2 on mobile?</summary>
+        <div class="faq__answer">
+          The official page lists both browser and mobile platforms and includes touch
+          instructions, so yes on the platforms Coolmath supports. Our
+          <a href="/how-to-play/">mobile section</a> explains the layout.
+        </div>
+      </details>
+    </div>
+  </section>
+</BaseLayout>

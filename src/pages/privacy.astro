@@ -1,0 +1,127 @@
+---
+
+// Editorial page: fully static, rendered at build time.
+export const prerender = true;
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout>
+  <header class="page-head container">
+    <span class="eyebrow">Privacy</span>
+    <h1>Privacy Policy: What This Site Collects (Very Little)</h1>
+    <p>
+      This policy describes the site exactly as it is built — no templates, no promises about
+      features that do not exist. Last updated: <strong>21 October 2026</strong>.
+    </p>
+  </header>
+
+  <section class="section container prose">
+    <h2>The short version</h2>
+    <ul>
+      <li>No visitor accounts, no forms, no mailing list.</li>
+      <li>
+        Two simple counts kept for the operator — how often pages load and how often game frames
+        open — plus no advertising, no third-party trackers, and no cookies for visitors.
+      </li>
+      <li>Local storage only: your best results in the on-site games, saved in your own browser.</li>
+      <li>
+        Nothing loads from third parties in the background — a game frame loads when you open its
+        game page, and links load only when you click them.
+      </li>
+    </ul>
+    <p>
+      Because no non-essential cookies or storage are used for visitors, there is no consent
+      banner — there is nothing for you to consent to.
+    </p>
+
+    <h2>What this site stores</h2>
+
+    <h3>Local storage (your device, your browser)</h3>
+    <p>
+      The parking game Tight Lot saves your best time per lot under the keys
+      <code>pfguide.tightlot.best.1</code>, <code>pfguide.tightlot.best.2</code> and
+      <code>pfguide.tightlot.best.3</code>. The endless game Traffic Rush saves its best distance
+      under <code>pfguide.trafficrush.best.1</code>. This data never leaves your browser — there is
+      no request that transmits it. To remove it, clear site data for this domain in your browser
+      settings; the games work normally without it.
+    </p>
+
+    <h3>Cookies (one, for the site operator only)</h3>
+    <p>
+      The public site sets no cookies. The operator-only dashboard at <code>/admin/</code> sets a
+      single session cookie named <code>pf_admin</code> so the operator stays signed in; it expires
+      after seven days, is an HMAC-signed value, and is never used for tracking or shared with
+      anyone. Visitors never receive it.
+    </p>
+
+    <h3>Simple counts (this site’s own)</h3>
+    <p>
+      A tiny first-party script, part of this site’s own code, tells this site’s server when a page
+      finished loading and when a game frame opened. The server stores only three things: the date,
+      the page path (or game), and how often — no IP address, no cookie, no identifier, nothing
+      about you. The purpose is narrow and stated plainly: the operator compares these totals
+      against Google Search Console and AdSense, which is why they must be accurate rather than
+      estimated. Nothing is shared with anyone, admin pages are excluded, and a visit without
+      JavaScript simply is not counted — the counter only records what it actually sees.
+    </p>
+
+    <h3>Server logs (your hosting provider)</h3>
+    <p>
+      Like almost every website, the server that delivers these pages keeps standard access logs:
+      IP address, requested URL, time, and browser user-agent. Those logs are created and retained
+      by whichever provider hosts the deployed site, under that provider’s policy. This project
+      ships no logging code of its own. If you need a log-related request handled, start through
+      the <a href="/contact/">contact page</a>.
+    </p>
+
+    <h2>What this site does not do</h2>
+    <ul>
+      <li>
+        <strong>No cookies for visitors</strong> — the only cookie this site sets is the operator’s
+        dashboard session, described above.
+      </li>
+      <li>
+        <strong>Only first-party counts</strong> — the small same-origin counters described above,
+        and nothing else: no heatmaps, no advertising IDs, no third-party analytics.
+      </li>
+      <li><strong>No advertising</strong> and no ad networks.</li>
+      <li><strong>No fingerprinting</strong>, no device profiling, no cross-site identifiers.</li>
+      <li><strong>No third-party scripts</strong> load in the page background.</li>
+    </ul>
+
+    <h2>Third-party content you choose to open</h2>
+    <p>
+      Pages link to the licensed game hosts (Coolmath Games, Poki) and other sites. Following one
+      takes you there, whose own privacy policy then applies.
+    </p>
+    <p>
+      In the <a href="/games/">games library</a>, opening a game page loads that game inside an
+      <strong>iframe</strong> on the page. The frame is served by the game’s provider domain —
+      games published by this site’s own code load from this domain instead — and may set its own
+      cookies or storage under <em>its</em> policy; this site cannot see or control that. The
+      version-guide pages load nothing from a third party at all: their game panels stay empty and
+      point to the licensed hosts. Nothing third-party loads in the page background anywhere.
+    </p>
+
+    <h2>Children’s privacy</h2>
+    <p>
+      This site collects personal information from no one, which includes children. There is no
+      visitor account system, no chat, no upload and no way to submit personal data through the
+      site itself — the contact page opens your own email client instead of a data-collecting form.
+    </p>
+
+    <h2>Changes to this policy</h2>
+    <p>
+      If the site ever gains a feature that changes this footprint — a form, any measurement —
+      this page will be updated to match <em>before</em> the feature ships, and the date above will
+      move. A policy that describes a different site than the one running is worse than no policy.
+    </p>
+
+    <h2>Questions</h2>
+    <p>
+      Anything about your data or this policy can go through the
+      <a href="/contact/">contact page</a>. Context on why the site is built this way is on the
+      <a href="/about/">about page</a>.
+    </p>
+  </section>
+</BaseLayout>

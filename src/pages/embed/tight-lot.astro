@@ -1,0 +1,29 @@
+---
+/**
+ * Standalone host for the original Tight Lot mini-game. Served inside the
+ * site's own /games/tight-lot/ player frame (internal embed) and directly
+ * accessible for testing. Thin document — no site chrome inside a frame.
+ */
+import '../../styles/global.css';
+import TightLotPlayer from '../../components/TightLotPlayer.astro';
+
+// Prerendered: the game document is served from disk for the fastest possible
+// frame start. Plays are counted by the player page's beacon, not here.
+export const prerender = true;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, follow" />
+    <meta name="theme-color" content="#111318" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>Tight Lot — original parking game</title>
+  </head>
+  <body>
+    <TightLotPlayer />
+  </body>
+</html>

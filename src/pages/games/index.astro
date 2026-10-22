@@ -1,0 +1,119 @@
+---
+/**
+ * Games library — server-rendered on every request, so a game published in
+ * the admin dashboard appears here instantly (no rebuild). Search and
+ * category filters work without JavaScript via GET parameters.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import GameCard from '../../components/GameCard.astro';
+import { listGames } from '../../lib/store';
+
+const rawQ = (Astro.url.searchParams.get('q') ?? '').trim();
+const rawCat = (Astro.url.searchParams.get('category') ?? '').trim();
+const q = rawQ.toLowerCase();
+const cat = rawCat.toLowerCase();
+
+const all = listGames({ publishedOnly: true });
+// Chips dedupe case-insensitively — "Driving" and "driving" in the store are
+// one category (the first spelling wins for display; filtering already
+// compares lowercased, so either URL shape works).
+const chipSeen = new Map<string, string>();
+for (const g of all) {
+  const key = g.category.trim().toLowerCase();
+  if (key && !chipSeen.has(key)) chipSeen.set(key, g.category.trim());
+}
+const categories = [...chipSeen.values()].sort((a, b) => a.localeCompare(b));
+
+let games = all;
+if (cat) games = games.filter((g) => g.category.toLowerCase() === cat);
+if (q) {
+  games = games.filter(
+    (g) =>
+      g.title.toLowerCase().includes(q) ||
+      g.description.toLowerCase().includes(q) ||
+      g.tags.some((t) => t.toLowerCase().includes(q)),
+  );
+}
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Free parking & driving games',
+    description:
+      'A playable library of free parking and driving browser games that run on this site.',
+    numberOfItems: all.length,
+  },
+];
+---
+
+<BaseLayout jsonLd={jsonLd}>
+  <section class="library-hero">
+    <div class="container--wide">
+      <h1 class="page-head__title">Play Free Parking &amp; Driving Games Online</h1>
+      <p class="lead library-hero__lead">
+        Every game here plays <strong>right inside this site</strong> — no downloads, no redirects to
+        other websites. Pick a game and it loads in the player below its page.
+      </p>
+    </div>
+  </section>
+
+  <section class="container--wide filters-wrap" aria-label="Find a game">
+    <form class="filters" method="get" action="/games/" role="search">
+      <label class="sr-only" for="game-search">Search games</label>
+      <input
+        class="input"
+        type="search"
+        id="game-search"
+        name="q"
+        value={rawQ}
+        placeholder="Search games…"
+        autocomplete="off"
+      />
+      <button class="btn btn--primary" type="submit">Search</button>
+      {(rawQ || rawCat) && <a class="btn btn--ghost" href="/games/">Clear</a>}
+    </form>
+
+    {categories.length > 0 && (
+      <nav class="cat-chips" aria-label="Game categories">
+        <a class:list={['chip', 'chip--link', { 'chip--active': !cat }]} href="/games/">All</a>
+        {categories.map((c) => (
+          <a
+            class:list={['chip', 'chip--link', { 'chip--active': cat === c.toLowerCase() }]}
+            href={`/games/?category=${encodeURIComponent(c)}`}
+            aria-current={cat === c.toLowerCase() ? 'true' : undefined}
+          >
+            {c}
+          </a>
+        ))}
+      </nav>
+    )}
+  </section>
+
+  <section class="section container--wide" aria-label="Game library">
+    {games.length > 0 ? (
+      <div class="game-grid">
+        {games.map((game) => (
+          <GameCard
+            title={game.title}
+            href={`/games/${game.slug}/`}
+            description={game.description}
+            cover={game.cover}
+            category={game.category}
+            featured={game.featured}
+          />
+        ))}
+      </div>
+    ) : (
+      <div class="empty-state">
+        <h2>No games matched{rawQ ? ` “${rawQ}”` : ' those filters'}</h2>
+        <p>
+          {all.length === 0
+            ? 'The library is empty right now — check back soon.'
+            : 'Try a different search term or browse all categories.'}
+        </p>
+        <a class="btn btn--secondary" href="/games/">Show all games</a>
+      </div>
+    )}
+  </section>
+</BaseLayout>

@@ -1,0 +1,104 @@
+---
+
+// Editorial page: fully static, rendered at build time.
+export const prerender = true;
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout>
+  <header class="page-head container--wide">
+    <span class="eyebrow">About</span>
+    <h1>About This Independent Parking Fury Resource</h1>
+    <p>
+      What this site is, where its facts come from, why the official games are not re-hosted here,
+      and how the original games were made. Short version: one player, original writing,
+      official sources, nothing hidden.
+    </p>
+  </header>
+
+  <section class="section container prose">
+    <h2>What this site is</h2>
+    <p>
+      A guide to the Parking Fury series — controls, version differences, level structure,
+      troubleshooting and a curated list of alternatives — plus a small
+      <a href="/games/">games library</a> of original games that play right on this site. It
+      exists because searching for any of those things mostly returns the game portals themselves
+      or thin “unblocked” mirror sites — there is little in between that simply explains how the
+      games work.
+    </p>
+    <p>
+      It is <strong>not</strong> affiliated with the game’s creator, Andriy Pidvirnyy, or with
+      Coolmath Games, Poki, Brain Software or any other platform. No official endorsement exists
+      or is implied; “Parking Fury” belongs to its rights holder and is used here only to refer
+      to the games being documented.
+    </p>
+
+    <h2>Where every fact comes from</h2>
+    <p>
+      Factual claims about the series are checked against the pages of the platforms that license
+      them — Coolmath Games for the top-down trilogy, Poki for the 3D series — and each guide page
+      states when it was checked (currently <strong>October 2026</strong>). Specifically:
+    </p>
+    <ul>
+      <li><strong>Release dates, controls, level counts, platforms:</strong> taken verbatim or closely paraphrased from the official game pages.</li>
+      <li><strong>Level counts for the sequels:</strong> not published, therefore not claimed.</li>
+      <li><strong>Related-game descriptions:</strong> rewritten from each host’s own description — not presented as our reviews, because we did not review them here.</li>
+      <li><strong>Anything we cannot source</strong> is left out rather than filled in with plausible-sounding detail.</li>
+    </ul>
+    <p>
+      Spot something wrong? <a href="/contact/">Corrections are welcome</a> — accuracy beats
+      volume on a site like this.
+    </p>
+
+    <h2 id="embeds">Why the official games are not embedded here</h2>
+    <p>
+      Embedding a game means your page loads the host’s copy inside a frame. That is only
+      legitimate with the rights holder’s permission — and as of October 2026, both official
+      hosts of the series actively block it:
+    </p>
+    <ul>
+      <li><strong>Coolmath Games</strong> responds with <code>X-Frame-Options: SAMEORIGIN</code>, so its game pages refuse to render inside other sites.</li>
+      <li><strong>Poki</strong> sends <code>Content-Security-Policy: frame-ancestors https://*.poki.io …</code>, which allows framing only from its own infrastructure.</li>
+    </ul>
+    <p>
+      So this site sends you to the licensed copies instead of pirating a mirror, and the version
+      pages’ game panels stay empty for the same reason. The panel has a real integration point:
+      if a licensed embed is ever granted, the operator adds it in the admin dashboard and the
+      same panel loads the official game with loading, timeout and error states already built in.
+    </p>
+
+    <h2>The original games are ours</h2>
+    <p>
+      “Tight Lot” (three-lot parking) and “Traffic Rush” (endless lane dodging) were written for
+      this site from scratch: original code, original canvas rendering, no third-party libraries
+      or art. They make no network requests, play no sound, and store only your best results in
+      your own browser’s local storage. Each plays inside its own page here — in a frame on its
+      game page — and never redirects you to another website.
+    </p>
+
+    <h2>How the site is funded and tracked</h2>
+    <p>
+      It is not funded by anything — there are no ads, no trackers, no third-party scripts and no
+      visitor accounts. The only cookie on the whole site is the operator’s own dashboard session
+      (described in the <a href="/privacy/">privacy policy</a>), which visitors never receive. The
+      policy also spells out the two same-origin counters the dashboard uses to compare traffic
+      with Search Console — first-party, cookie-free, and nothing like analytics tooling. There is
+      no consent banner to click through because there is nothing else for you to consent to.
+    </p>
+
+    <h2>Editorial rules we hold ourselves to</h2>
+    <ul>
+      <li>No fabricated ratings, reviews, testimonials, statistics or author credentials.</li>
+      <li>No fake download buttons, fake “play” controls or misleading redirects — every button does what its label says.</li>
+      <li>Only games the operator has the right to embed are published; official hosts that block framing (Coolmath Games, Poki) are linked to, never framed.</li>
+      <li>No walkthrough steps for levels we have not verified, and no claims of “every level covered” until they are true.</li>
+      <li>No doorway pages: a URL exists only when it answers a genuinely different question.</li>
+    </ul>
+
+    <div class="btn-row">
+      <a class="btn btn--primary" href="/games/">Play</a>
+      <a class="btn btn--secondary" href="/contact/">Contact &amp; corrections</a>
+      <a class="btn btn--ghost" href="/privacy/">Privacy</a>
+    </div>
+  </section>
+</BaseLayout>

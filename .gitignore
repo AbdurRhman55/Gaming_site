@@ -1,0 +1,14 @@
+# Dependencies & build output (rebuilt on the server)
+node_modules/
+dist/
+
+# Secrets — never commit (server par alag se banega)
+.env
+
+# Local backups of pre-optimization covers (not needed on the server)
+data/uploads-backups/
+
+# Deployment artifact
+pf-site.zip
+
+*.log

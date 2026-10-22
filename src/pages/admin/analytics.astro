@@ -1,0 +1,582 @@
+---
+/**
+ * Admin → Analytics — first-party traffic & play counts, broken down by
+ * day / week / month / year and by range preset.
+ *
+ * Professional gaming analytics console:
+ *   - Multi-chart engine (Bar Chart, Smooth Neon Line Chart, Gradient Area Chart)
+ *   - Dual metrics: Page Views (Gold) and Game Plays (Cyan)
+ *   - Player conversion telemetry & retention stats
+ *   - Visual progress bars on top pages and top games tables
+ */
+import AdminLayout from '../../components/admin/AdminLayout.astro';
+import AdminLogin from '../../components/admin/AdminLogin.astro';
+import { isAuthed } from '../../lib/auth';
+import { summarize, type Period } from '../../lib/analytics';
+
+const authed = isAuthed(Astro.cookies);
+
+const PERIODS: { key: Period; label: string; hint: string }[] = [
+  { key: 'day', label: 'Daily', hint: 'one bar per day' },
+  { key: 'week', label: 'Weekly', hint: 'ISO weeks' },
+  { key: 'month', label: 'Monthly', hint: 'per month' },
+  { key: 'year', label: 'Yearly', hint: 'per year' },
+];
+
+const RANGES: { key: string; label: string; days: number | null }[] = [
+  { key: '7d', label: 'Last 7 days', days: 7 },
+  { key: '30d', label: 'Last 30 days', days: 30 },
+  { key: '90d', label: 'Last 90 days', days: 90 },
+  { key: '365d', label: 'Last 12 months', days: 365 },
+  { key: 'all', label: 'All time', days: null },
+];
+
+const sinceFor = (days: number | null): string | null =>
+  days === null ? null : new Date(Date.now() - (days - 1) * 864e5).toISOString().slice(0, 10);
+
+// Initial server render: 30 days grouped by week (matches the default UI state).
+const initialPeriod: Period = 'week';
+const initialSince = sinceFor(30);
+const initial = authed ? summarize({ period: initialPeriod, since: initialSince }) : null;
+
+const pageKpis = initial
+  ? {
+      views: initial.totals.views,
+      plays: initial.totals.plays,
+      days: initial.activeDays,
+      avg: initial.activeDays ? Math.round(initial.totals.views / initial.activeDays) : 0,
+      conv: initial.totals.views ? ((initial.totals.plays / initial.totals.views) * 100).toFixed(1) : '0.0',
+      topPage: initial.topPages[0] ?? null,
+      topGame: initial.topGames[0] ?? null,
+    }
+  : null;
+---
+
+{!authed ? (
+  <AdminLogin />
+) : (
+  <AdminLayout title="Analytics" crumb="Traffic & telemetry" active="analytics">
+    <div class="analytics" data-analytics data-since={initialSince ?? ''} data-period={initialPeriod}>
+      <div class="analytics__controls panel">
+        <div class="analytics__group" role="group" aria-label="Group by">
+          <span class="analytics__grouplabel">Group by</span>
+          {PERIODS.map((p) => (
+            <button
+              class:list={['chip', 'chip--link', p.key === initialPeriod && 'chip--active']}
+              type="button"
+              data-period-btn={p.key}
+              aria-pressed={p.key === initialPeriod}
+              title={p.hint}
+            >
+              {p.label}
+            </button>
+          ))}
+        </div>
+        <div class="analytics__group" role="group" aria-label="Date range">
+          <span class="analytics__grouplabel">Range</span>
+          {RANGES.map((r) => (
+            <button
+              class:list={['chip', 'chip--link', r.days === 30 && 'chip--active']}
+              type="button"
+              data-range-btn={r.key}
+              data-days={r.days === null ? '' : String(r.days)}
+              aria-pressed={r.days === 30}
+            >
+              {r.label}
+            </button>
+          ))}
+        </div>
+        <p class="analytics__range small muted" data-range-label>
+          {initialSince ? `${initialSince} → today` : 'All recorded history'}
+        </p>
+        <div class="analytics__group">
+          <button class="btn btn--ghost btn--sm" type="button" data-reset-analytics disabled style="opacity: 0.55; cursor: not-allowed;" title="Reset disabled — traffic counts are permanently preserved">
+            Reset disabled (Permanent)
+          </button>
+          <p class="small muted" style="margin:0">
+            Analytics are permanently stored in history. Reset is locked to prevent accidental data loss.
+          </p>
+        </div>
+      </div>
+
+      <div class="admin-stats analytics__kpis">
+        <div class="admin-stat">
+          <span class="admin-stat__label">Page views</span>
+          <strong data-kpi="views">{pageKpis?.views ?? 0}</strong>
+          <span class="admin-stat__sub small muted">in selected range</span>
+        </div>
+        <div class="admin-stat admin-stat--live">
+          <span class="admin-stat__label">Game plays</span>
+          <strong data-kpi="plays">{pageKpis?.plays ?? 0}</strong>
+          <span class="admin-stat__sub small muted">frame opens in player</span>
+        </div>
+        <div class="admin-stat">
+          <span class="admin-stat__label">Play conversion</span>
+          <strong data-kpi="conv">{pageKpis?.conv ?? '0.0'}%</strong>
+          <span class="admin-stat__sub small muted">plays per view ratio</span>
+        </div>
+        <div class="admin-stat">
+          <span class="admin-stat__label">Active days</span>
+          <strong data-kpi="days">{pageKpis?.days ?? 0}</strong>
+          <span class="admin-stat__sub small muted">days with traffic</span>
+        </div>
+        <div class="admin-stat">
+          <span class="admin-stat__label">Avg views / day</span>
+          <strong data-kpi="avg">{pageKpis?.avg ?? 0}</strong>
+          <span class="admin-stat__sub small muted">across active days</span>
+        </div>
+      </div>
+
+      <section class="panel analytics__chart" aria-labelledby="chart-title">
+        <div class="admin-toolbar" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
+          <div>
+            <h2 class="admin-toolbar__title" id="chart-title">Traffic &amp; Gameplay Telemetry</h2>
+            <p class="small muted" data-chart-note style="margin-top:0.2rem">grouped weekly · last 30 days</p>
+          </div>
+          <div class="chart__controls">
+            <div class="chart__legend">
+              <span class="legend-item"><span class="legend-dot legend-dot--views"></span>Views</span>
+              <span class="legend-item"><span class="legend-dot legend-dot--plays"></span>Plays</span>
+            </div>
+            <div class="chip-group" data-chart-type-group role="group" aria-label="Chart type">
+              <button class="chip chip--active" type="button" data-chart-type="bar">📊 Bars</button>
+              <button class="chip" type="button" data-chart-type="line">📈 Line</button>
+              <button class="chip" type="button" data-chart-type="area">🏔️ Area</button>
+            </div>
+          </div>
+        </div>
+        <div class="chart" data-chart style="margin-top:1.25rem">
+          <p class="empty-state" data-chart-empty hidden>No traffic recorded in this range yet.</p>
+        </div>
+      </section>
+
+      <div class="analytics__tables">
+        <section class="panel analytics__table" aria-labelledby="pages-title">
+          <div class="admin-toolbar">
+            <h2 class="admin-toolbar__title" id="pages-title">Top pages</h2>
+            <p class="small muted">by page views</p>
+          </div>
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th scope="col">Path</th>
+                  <th scope="col">Views</th>
+                  <th scope="col" style="width:30%">Share</th>
+                </tr>
+              </thead>
+              <tbody data-pages-body>
+                {(initial?.topPages ?? []).slice(0, 10).map((p) => {
+                  const pct = initial?.totals.views ? Math.round((p.views / initial.totals.views) * 100) : 0;
+                  return (
+                    <tr>
+                      <td class="admin-table__game"><strong>{p.path}</strong></td>
+                      <td class="small">{p.views}</td>
+                      <td class="small muted">
+                        <div style="display:flex; align-items:center; gap:0.5rem">
+                          <span>{pct}%</span>
+                          <div class="meter-track" style="flex:1">
+                            <div class="meter-fill" style={`width:${pct}%`}></div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+          <p class="empty-state" data-pages-empty hidden>No page views recorded yet.</p>
+        </section>
+
+        <section class="panel analytics__table" aria-labelledby="games-title">
+          <div class="admin-toolbar">
+            <h2 class="admin-toolbar__title" id="games-title">Top games</h2>
+            <p class="small muted">by game frame opens</p>
+          </div>
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th scope="col">Game</th>
+                  <th scope="col">Plays</th>
+                  <th scope="col" style="width:30%">Share</th>
+                </tr>
+              </thead>
+              <tbody data-games-body>
+                {(initial?.topGames ?? []).slice(0, 10).map((g) => {
+                  const pct = initial?.totals.plays ? Math.round((g.plays / initial.totals.plays) * 100) : 0;
+                  return (
+                    <tr>
+                      <td class="admin-table__game"><strong>{g.slug}</strong></td>
+                      <td class="small">{g.plays}</td>
+                      <td class="small muted">
+                        <div style="display:flex; align-items:center; gap:0.5rem">
+                          <span>{pct}%</span>
+                          <div class="meter-track" style="flex:1">
+                            <div class="meter-fill meter-fill--plays" style={`width:${pct}%`}></div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+          <p class="empty-state" data-games-empty hidden>No plays recorded yet.</p>
+        </section>
+      </div>
+
+      <section class="panel analytics__table" aria-labelledby="daily-title">
+        <div class="admin-toolbar">
+          <h2 class="admin-toolbar__title" id="daily-title">Day-by-day log</h2>
+          <p class="small muted" data-log-note>most recent days first</p>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Views</th>
+                <th scope="col">Game plays</th>
+              </tr>
+            </thead>
+            <tbody data-daily-body>
+              {(initial?.daily ?? []).slice(-60).reverse().map((d) => (
+                <tr>
+                  <td class="admin-table__game"><strong>{d.day}</strong></td>
+                  <td class="small">{d.views}</td>
+                  <td class="small">{d.plays}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p class="empty-state" data-daily-empty hidden>No days recorded yet.</p>
+      </section>
+    </div>
+  </AdminLayout>
+)}
+
+<script>
+  /* Analytics controller: multi-chart engine + real-time telemetry updates. */
+  interface Bucket { key: string; views: number; plays: number }
+  interface AnalyticsPayload {
+    period: string;
+    since: string | null;
+    totals: { views: number; plays: number };
+    series: Bucket[];
+    topPages: { path: string; views: number }[];
+    topGames: { slug: string; plays: number }[];
+    daily: { day: string; views: number; plays: number }[];
+    activeDays: number;
+  }
+
+  const root = document.querySelector<HTMLElement>('[data-analytics]');
+  if (root) {
+    const escapeHtml = (s: string) =>
+      s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c] as string);
+
+    let period = root.dataset.period || 'week';
+    let since = root.dataset.since || '';
+    let currentChartType: 'bar' | 'line' | 'area' = 'bar';
+    let cachedSeries: Bucket[] = [];
+    let cachedLabel: string = 'weekly views';
+
+    const periodBtns = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-period-btn]'));
+    const rangeBtns = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-range-btn]'));
+    const chartTypeBtns = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-chart-type]'));
+
+    const setKpi = (key: string, value: string) => {
+      const el = root.querySelector<HTMLElement>(`[data-kpi="${key}"]`);
+      if (el) el.textContent = value;
+    };
+
+    const renderChart = (series: Bucket[], label: string) => {
+      cachedSeries = series;
+      cachedLabel = label;
+      const host = root.querySelector<HTMLElement>('[data-chart]');
+      const empty = root.querySelector<HTMLElement>('[data-chart-empty]');
+      if (!host) return;
+      if (series.length === 0) {
+        host.innerHTML = '';
+        if (empty) empty.hidden = false;
+        return;
+      }
+      if (empty) empty.hidden = true;
+
+      const W = 1000;
+      const H = 280;
+      const padL = 50;
+      const padB = 32;
+      const padT = 20;
+      const maxVal = Math.max(1, ...series.map((b) => Math.max(b.views, b.plays)));
+      const innerW = W - padL - 20;
+      const innerH = H - padB - padT;
+      const slot = innerW / series.length;
+
+      // 4 horizontal grid lines
+      const yTicks = [0, Math.round(maxVal / 3), Math.round((maxVal * 2) / 3), maxVal];
+      const grid = yTicks
+        .map((t) => {
+          const y = padT + innerH - (t / maxVal) * innerH;
+          return `<line x1="${padL}" y1="${y}" x2="${W - 20}" y2="${y}" class="chart__grid" />
+                  <text x="${padL - 10}" y="${y + 4}" class="chart__tick" text-anchor="end">${t}</text>`;
+        })
+        .join('');
+
+      let chartContent = '';
+
+      if (currentChartType === 'bar') {
+        const groupW = Math.max(4, Math.min(slot * 0.72, 48));
+        const barW = groupW / 2 - 1.5;
+
+        chartContent = series
+          .map((b, i) => {
+            const hViews = (b.views / maxVal) * innerH;
+            const hPlays = (b.plays / maxVal) * innerH;
+            const groupX = padL + i * slot + (slot - groupW) / 2;
+            const xViews = groupX;
+            const xPlays = groupX + barW + 3;
+            const yViews = padT + innerH - hViews;
+            const yPlays = padT + innerH - hPlays;
+
+            return `
+              <rect x="${xViews}" y="${yViews}" width="${barW}" height="${Math.max(hViews, b.views > 0 ? 2 : 0)}" rx="2" class="chart__bar">
+                <title>${escapeHtml(b.key)}: ${b.views} views</title>
+              </rect>
+              <rect x="${xPlays}" y="${yPlays}" width="${barW}" height="${Math.max(hPlays, b.plays > 0 ? 2 : 0)}" rx="2" class="chart__bar chart__bar--plays">
+                <title>${escapeHtml(b.key)}: ${b.plays} game plays</title>
+              </rect>
+            `;
+          })
+          .join('');
+      } else {
+        // Line or Area chart
+        const pointsViews = series.map((b, i) => {
+          const x = padL + i * slot + slot / 2;
+          const y = padT + innerH - (b.views / maxVal) * innerH;
+          return { x, y, val: b.views, key: b.key };
+        });
+
+        const pointsPlays = series.map((b, i) => {
+          const x = padL + i * slot + slot / 2;
+          const y = padT + innerH - (b.plays / maxVal) * innerH;
+          return { x, y, val: b.plays, key: b.key };
+        });
+
+        const makePath = (pts: { x: number; y: number }[]) => {
+          if (pts.length === 1) return `M ${pts[0].x} ${pts[0].y} L ${pts[0].x + 1} ${pts[0].y}`;
+          return pts.reduce((acc, p, i) => (i === 0 ? `M ${p.x} ${p.y}` : `${acc} L ${p.x} ${p.y}`), '');
+        };
+
+        const pathViews = makePath(pointsViews);
+        const pathPlays = makePath(pointsPlays);
+
+        let areaSvg = '';
+        if (currentChartType === 'area') {
+          const firstX = pointsViews[0].x;
+          const lastX = pointsViews[pointsViews.length - 1].x;
+          const bottomY = padT + innerH;
+          const areaPathViews = `${pathViews} L ${lastX} ${bottomY} L ${firstX} ${bottomY} Z`;
+          const areaPathPlays = `${pathPlays} L ${lastX} ${bottomY} L ${firstX} ${bottomY} Z`;
+
+          areaSvg = `
+            <path d="${areaPathViews}" class="chart__area" />
+            <path d="${areaPathPlays}" class="chart__area chart__area--plays" />
+          `;
+        }
+
+        const dotsViews = pointsViews
+          .map((p) => `<circle cx="${p.x}" cy="${p.y}" r="4" class="chart__dot"><title>${escapeHtml(p.key)}: ${p.val} views</title></circle>`)
+          .join('');
+
+        const dotsPlays = pointsPlays
+          .map((p) => `<circle cx="${p.x}" cy="${p.y}" r="4" class="chart__dot chart__dot--plays"><title>${escapeHtml(p.key)}: ${p.val} plays</title></circle>`)
+          .join('');
+
+        chartContent = `
+          ${areaSvg}
+          <path d="${pathViews}" class="chart__line" />
+          <path d="${pathPlays}" class="chart__line chart__line--plays" />
+          ${dotsViews}
+          ${dotsPlays}
+        `;
+      }
+
+      // X axis labels
+      const labelIdx = series.length <= 4 ? series.map((_, i) => i) : [0, Math.floor(series.length / 3), Math.floor((series.length * 2) / 3), series.length - 1];
+      const xLabels = labelIdx
+        .map((i) => {
+          const x = padL + i * slot + slot / 2;
+          return `<text x="${x}" y="${H - 8}" class="chart__tick" text-anchor="middle">${escapeHtml(series[i].key)}</text>`;
+        })
+        .join('');
+
+      host.innerHTML = `
+        <svg viewBox="0 0 ${W} ${H}" class="chart__svg" role="img" aria-label="Chart of page views and game plays">
+          <defs>
+            <linearGradient id="areaGradViews" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#f5c518" stop-opacity="0.5" />
+              <stop offset="100%" stop-color="#f5c518" stop-opacity="0.0" />
+            </linearGradient>
+            <linearGradient id="areaGradPlays" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.45" />
+              <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.0" />
+            </linearGradient>
+          </defs>
+          ${grid}
+          ${chartContent}
+          ${xLabels}
+        </svg>
+      `;
+    };
+
+    const renderRows = (
+      bodySel: string,
+      emptySel: string,
+      rows: { a: string; b: number }[],
+      total: number,
+      isPlays: boolean = false
+    ) => {
+      const body = root.querySelector<HTMLElement>(bodySel);
+      const empty = root.querySelector<HTMLElement>(emptySel);
+      if (!body) return;
+      if (rows.length === 0) {
+        body.innerHTML = '';
+        if (empty) empty.hidden = false;
+        return;
+      }
+      if (empty) empty.hidden = true;
+      body.innerHTML = rows
+        .map((r) => {
+          const pct = total > 0 ? Math.round((r.b / total) * 100) : 0;
+          return `<tr>
+            <td class="admin-table__game"><strong>${escapeHtml(r.a)}</strong></td>
+            <td class="small">${r.b}</td>
+            <td class="small muted">
+              <div style="display:flex; align-items:center; gap:0.5rem">
+                <span>${pct}%</span>
+                <div class="meter-track" style="flex:1">
+                  <div class="meter-fill ${isPlays ? 'meter-fill--plays' : ''}" style="width:${pct}%"></div>
+                </div>
+              </div>
+            </td>
+          </tr>`;
+        })
+        .join('');
+    };
+
+    const periodWord = (p: string) =>
+      p === 'day' ? 'daily' : p === 'week' ? 'weekly' : p === 'month' ? 'monthly' : 'yearly';
+
+    const apply = async () => {
+      const params = new URLSearchParams({ period });
+      if (since) params.set('since', since);
+      try {
+        const res = await fetch(`/api/admin/analytics/?${params.toString()}`);
+        if (!res.ok) return;
+        const data = (await res.json()) as AnalyticsPayload & { ok?: boolean };
+        if (!data || !Array.isArray(data.series)) return;
+
+        setKpi('views', String(data.totals.views));
+        setKpi('plays', String(data.totals.plays));
+        setKpi('days', String(data.activeDays));
+        setKpi(
+          'avg',
+          data.activeDays ? String(Math.round(data.totals.views / data.activeDays)) : '0',
+        );
+        setKpi(
+          'conv',
+          data.totals.views ? `${((data.totals.plays / data.totals.views) * 100).toFixed(1)}%` : '0.0%',
+        );
+
+        const note = root.querySelector<HTMLElement>('[data-chart-note]');
+        if (note) note.textContent = `grouped ${periodWord(data.period)} · ${since ? `${since} → today` : 'all time'}`;
+        const rangeLabel = root.querySelector<HTMLElement>('[data-range-label]');
+        if (rangeLabel) rangeLabel.textContent = since ? `${since} → today` : 'All recorded history';
+        const logNote = root.querySelector<HTMLElement>('[data-log-note]');
+        if (logNote) logNote.textContent = `${data.daily.length} day${data.daily.length === 1 ? '' : 's'} recorded`;
+
+        renderChart(data.series, `${periodWord(data.period)} views`);
+        renderRows('[data-pages-body]', '[data-pages-empty]', data.topPages.slice(0, 10).map((p) => ({ a: p.path, b: p.views })), data.totals.views, false);
+        renderRows('[data-games-body]', '[data-games-empty]', data.topGames.slice(0, 10).map((g) => ({ a: g.slug, b: g.plays })), data.totals.plays, true);
+
+        const dailyBody = root.querySelector<HTMLElement>('[data-daily-body]');
+        const dailyEmpty = root.querySelector<HTMLElement>('[data-daily-empty]');
+        const recent = data.daily.slice(-60).reverse();
+        if (dailyBody) {
+          if (recent.length === 0) {
+            dailyBody.innerHTML = '';
+            if (dailyEmpty) dailyEmpty.hidden = false;
+          } else {
+            if (dailyEmpty) dailyEmpty.hidden = true;
+            dailyBody.innerHTML = recent
+              .map(
+                (d) => `<tr>
+                  <td class="admin-table__game"><strong>${escapeHtml(d.day)}</strong></td>
+                  <td class="small">${d.views}</td>
+                  <td class="small">${d.plays}</td>
+                </tr>`,
+              )
+              .join('');
+          }
+        }
+      } catch {
+        /* transient network error — keep the last good render */
+      }
+    };
+
+    for (const btn of periodBtns) {
+      btn.addEventListener('click', () => {
+        period = btn.dataset.periodBtn ?? 'week';
+        for (const other of periodBtns) {
+          const active = other === btn;
+          other.classList.toggle('chip--active', active);
+          other.setAttribute('aria-pressed', String(active));
+        }
+        void apply();
+      });
+    }
+
+    for (const btn of rangeBtns) {
+      btn.addEventListener('click', () => {
+        const days = btn.dataset.days;
+        since =
+          !days
+            ? ''
+            : new Date(Date.now() - (Number(days) - 1) * 864e5).toISOString().slice(0, 10);
+        for (const other of rangeBtns) {
+          const active = other === btn;
+          other.classList.toggle('chip--active', active);
+          other.setAttribute('aria-pressed', String(active));
+        }
+        void apply();
+      });
+    }
+
+    for (const btn of chartTypeBtns) {
+      btn.addEventListener('click', () => {
+        currentChartType = (btn.dataset.chartType as 'bar' | 'line' | 'area') || 'bar';
+        for (const other of chartTypeBtns) {
+          other.classList.toggle('chip--active', other === btn);
+        }
+        if (cachedSeries.length > 0) {
+          renderChart(cachedSeries, cachedLabel);
+        }
+      });
+    }
+
+    // Initial render of chart
+    if (pageKpis && initial && initial.series) {
+      renderChart(initial.series, 'weekly views');
+    }
+
+    root
+      .querySelector<HTMLButtonElement>('[data-reset-analytics]')
+      ?.addEventListener('click', async () => {
+        alert('Analytics reset is permanently locked to preserve your historical traffic data.');
+      });
+  }
+</script>
